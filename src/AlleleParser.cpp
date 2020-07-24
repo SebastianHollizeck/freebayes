@@ -66,7 +66,8 @@ void AlleleParser::openBams(void) {
         }
     }
 
-#else 
+#else
+    bamMultiReader.SetCramReference(parameters.fasta)
     if (parameters.useStdin) {
         if (!bamMultiReader.Open("-")) {
             ERROR("Could not read BAM data from stdin");
