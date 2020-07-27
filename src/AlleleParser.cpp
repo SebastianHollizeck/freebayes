@@ -76,8 +76,12 @@ void AlleleParser::openBams(void) {
     } else {
       for (std::vector<std::string>::const_iterator i = parameters.bams.begin(); i != parameters.bams.end(); ++i){
             string b = *i;
-            if(b.substr(.size()-4).compare("cram") == 0){
+            // set reference to supplied fasta if the alignment file ends with cram
+            if(b.substr(b.size()-4).compare("cram") == 0){
                 bamMultiReader.SetCramReference(parameters.fasta);
+            }else{
+                // reset the reference if this alignment file is no cram
+                bamMultiReader.SetCramReference("")
             }
 
             if (!bamMultiReader.Open(*i)) {
