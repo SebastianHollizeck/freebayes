@@ -78,6 +78,11 @@ void AlleleParser::openBams(void) {
             string b = *i;
             // set reference to supplied fasta if the alignment file ends with cram
             if(b.substr(b.size()-4).compare("cram") == 0){
+                //gzipped references do not work for hts apparently
+                if(parameters.fasta.substr(parameters.fasta.size()-2).compare("gz") ==0){
+                    ERROR("CRAM decompression not possible with compressed reference")
+                    exit(1)
+                }
                 bamMultiReader.SetCramReference(parameters.fasta);
             }else{
                 // reset the reference if this alignment file is no cram
