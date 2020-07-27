@@ -75,7 +75,7 @@ void AlleleParser::openBams(void) {
         }
     } else {
       for (std::vector<std::string>::const_iterator i = parameters.bams.begin(); i != parameters.bams.end(); ++i){
-            string b = *i
+            string b = *i;
             if(b.substr(.size()-4).compare("cram") == 0){
                 bamMultiReader.SetCramReference(parameters.fasta);
             }
@@ -97,7 +97,7 @@ void AlleleParser::openBams(void) {
                     }
             }*/
             }
-        }   
+        }
         /*if (!bamMultiReader.SetExplicitMergeOrder(bamMultiReader.MergeByCoordinate)) {
             ERROR("could not set sort order to coordinate");
             cerr << bamMultiReader.GetErrorString() << endl;
