@@ -78,9 +78,11 @@ void AlleleParser::openBams(void) {
             string b = *i;
             // set reference to supplied fasta if the alignment file ends with cram
             if(b.substr(b.size()-4).compare("cram") == 0){
+                DEBUG("Setting cram reference for bam reader")
                 bamMultiReader.SetCramReference(parameters.fasta);
             }else{
                 // reset the reference if this alignment file is no cram
+                DEBUG("Unsetting cram reference for bam reader")
                 bamMultiReader.SetCramReference("");
             }
 
