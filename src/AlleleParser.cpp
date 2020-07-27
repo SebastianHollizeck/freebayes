@@ -677,6 +677,7 @@ void AlleleParser::loadReferenceSequence(string& seqname) {
         currentSequence = uppercase(reference.getRawSequence(currentSequenceName));
         // check the first few characters and verify they are not garbage
         string validBases = "ACGTURYKMSWBDHVN-";
+        DEBUG("Checking for invalid bases in reference")
         size_t found = currentSequence.substr(0, 100).find_first_not_of(validBases);
         if (found != string::npos) {
             ERROR("Found non-DNA character " << currentSequence.at(found)
