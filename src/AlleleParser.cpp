@@ -83,27 +83,27 @@ void AlleleParser::openBams(void) {
             if (!bamMultiReader.Open(*i)) {
                 ERROR("Could not open input BAM file: " + *i);
                 exit(1);
+            }else {
+            /*if (!bamMultiReader.LocateIndexes()) {
+                    ERROR("Opened BAM reader without index file, jumping is disabled.");
+                    cerr << bamMultiReader.GetErrorString() << endl;
+                    if (!targets.empty()) {
+                        ERROR("Targets specified but no BAM index file provided.");
+                        ERROR("FreeBayes cannot jump through targets in BAM files without BAM index files, exiting.");
+                        ERROR("Please generate a BAM index file eithe, e.g.:");
+                        ERROR("    \% bamtools index -in <bam_file>");
+                        ERROR("    \% samtools index <bam_file>");
+                        exit(1);
+                    }
+            }*/
             }
-
-	else {
-	  /*if (!bamMultiReader.LocateIndexes()) {
-                ERROR("Opened BAM reader without index file, jumping is disabled.");
-                cerr << bamMultiReader.GetErrorString() << endl;
-                if (!targets.empty()) {
-                    ERROR("Targets specified but no BAM index file provided.");
-                    ERROR("FreeBayes cannot jump through targets in BAM files without BAM index files, exiting.");
-                    ERROR("Please generate a BAM index file eithe, e.g.:");
-                    ERROR("    \% bamtools index -in <bam_file>");
-                    ERROR("    \% samtools index <bam_file>");
-                    exit(1);
-                }
-		}*/
-        }
+        }   
         /*if (!bamMultiReader.SetExplicitMergeOrder(bamMultiReader.MergeByCoordinate)) {
             ERROR("could not set sort order to coordinate");
             cerr << bamMultiReader.GetErrorString() << endl;
             exit(1);
 	    }*/
+
     }
 #endif
 
