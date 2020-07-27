@@ -81,7 +81,7 @@ void AlleleParser::openBams(void) {
                 bamMultiReader.SetCramReference(parameters.fasta);
             }else{
                 // reset the reference if this alignment file is no cram
-                bamMultiReader.SetCramReference("")
+                bamMultiReader.SetCramReference("");
             }
 
             if (!bamMultiReader.Open(*i)) {
