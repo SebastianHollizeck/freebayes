@@ -67,19 +67,24 @@ void AlleleParser::openBams(void) {
     }
 
 #else
-    bamMultiReader.SetCramReference(parameters.fasta);
+
     if (parameters.useStdin) {
         if (!bamMultiReader.Open("-")) {
             ERROR("Could not read BAM data from stdin");
             exit(1);
         }
     } else {
-      for (std::vector<std::string>::const_iterator i = parameters.bams.begin();
-           i != parameters.bams.end(); ++i) 
-        if (!bamMultiReader.Open(*i)) {
-	  ERROR("Could not open input BAM file: " + *i);
-	  exit(1);
-	}
+      for (std::vector<std::string>::const_iterator i = parameters.bams.begin(); i != parameters.bams.end(); ++i){
+            string b = *i
+            if(b.substr(.size()-4).compare("cram") == 0){
+                bamMultiReader.SetCramReference(parameters.fasta);
+            }
+
+            if (!bamMultiReader.Open(*i)) {
+                ERROR("Could not open input BAM file: " + *i);
+                exit(1);
+            }
+
 	else {
 	  /*if (!bamMultiReader.LocateIndexes()) {
                 ERROR("Opened BAM reader without index file, jumping is disabled.");
@@ -413,7 +418,7 @@ string AlleleParser::vcfHeader() {
     for (REFVEC::const_iterator it = referenceSequences.begin();
 	 it != referenceSequences.end(); ++it)
       headerss << "##contig=<ID=" << it->REFNAME << ",length=" << it->REFLEN << ">" << endl;
-    
+
     headerss
         << "##phasing=none" << endl
         << "##commandline=\"" << parameters.commandline << "\"" << endl
@@ -655,7 +660,7 @@ bool AlleleParser::loadNextPositionWithInputVariant(void) {
 // alignment-based method for loading the first bit of our reference sequence
 void AlleleParser::loadReferenceSequence(BAMALIGN& alignment) {
   loadReferenceSequence(referenceIDToName[alignment.REFID]);
-  currentPosition = alignment.POSITION; 
+  currentPosition = alignment.POSITION;
 }
 
 void AlleleParser::loadReferenceSequence(string& seqname) {
@@ -819,7 +824,7 @@ void AlleleParser::loadSampleCNVMap(void) {
             sampleCNV.setPloidy(referenceSampleName, r->REFNAME, 0, r->REFLEN, 1);
         }
     }
-    
+
 }
 
 int AlleleParser::currentSamplePloidy(string const& sample) {
@@ -1388,7 +1393,7 @@ RegisteredAlignment& AlleleParser::registerAlignment(BAMALIGN& alignment, Regist
      *
      */
 
-    /*    std::cerr << "********" << std::endl 
+    /*    std::cerr << "********" << std::endl
 	      << alignment.QueryBases << std::endl
 	      << alignment.AlignedBases << std::endl;
     vector<CigarOp>::const_iterator cigarIter2 = alignment.CigarData.begin();
@@ -1939,7 +1944,7 @@ void AlleleParser::updateAlignmentQueue(long int position,
             DEBUG("alignment: " << currentAlignment.QNAME);
             // get read group, and map back to a sample name
             string readGroup;
-#ifdef HAVE_BAMTOOLS	    
+#ifdef HAVE_BAMTOOLS
             if (!currentAlignment.GetTag("RG", readGroup)) {
 #else
 	      currentAlignment.GetZTag("RG", readGroup);
@@ -2116,7 +2121,7 @@ void AlleleParser::removeRegisteredAlignmentsOverlappingPosition(long unsigned i
         }
     }
 }
-        
+
 void AlleleParser::addToRegisteredAlleles(vector<Allele*>& alleles) {
     registeredAlleles.insert(registeredAlleles.end(),
                              alleles.begin(),
@@ -2723,7 +2728,7 @@ bool AlleleParser::getFirstAlignment(void) {
       hasAlignments = false;
     } else {
       while (!currentAlignment.ISMAPPED) {
-	if (!GETNEXT(bamMultiReader, currentAlignment)) { 
+	if (!GETNEXT(bamMultiReader, currentAlignment)) {
 	  hasAlignments = false;
 	  break;
 	}
